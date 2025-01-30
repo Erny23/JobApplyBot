@@ -1,2 +1,9 @@
-# Auto detect text files and perform LF normalization
+# Indicate that all text files must have LF line endings
 * text=auto
+
+# Mark image files as binary
+*.png binary
+*.jpg binary
+
+# Prevent automatic merging of configuration files
+*.config merge=union
