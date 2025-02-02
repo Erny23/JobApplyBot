@@ -7,6 +7,7 @@ const browserPath: string =
 const userDataDirPath: string =
   process.env.USER_DATA ||
   "C:\\Users\\Efava\\AppData\\Local\\Google\\Chrome\\User Data\\Default";
+const user = process.env.USER || "";
 
 (async () => {
   let browser;
@@ -29,7 +30,31 @@ const userDataDirPath: string =
     const page = await browser.newPage();
     await page.goto("https://linkedin.com/feed/");
 
-    //console.log(await browser.cookies());
+    // Intentar detectar si hay un formulario de inicio de sesión
+    try {
+      await page
+        .locator("h1")
+        .filter((h1) => h1.innerText === "Iniciar sesión")
+        .wait();
+      console.log("Se detectó un formulario de inicio de sesión.");
+      // Aquí puedes agregar el código para manejar el formulario de inicio de sesión
+    } catch (error) {
+      console.log("No se detectó un formulario de inicio de sesión.");
+    }
+
+    // Intentar detectar si hay un feed
+    try {
+      // Identifica la página de feed
+      await page.waitForSelector("h3", { timeout: 5000 });
+      await page
+        .locator("h3")
+        .filter((h3) => h3.innerText === user)
+        .wait();
+      console.log("Se detectó el feed.");
+      // Aquí puedes agregar el código para manejar el formulario de inicio de sesión
+    } catch (error) {
+      console.log("Se produjo un error");
+    }
 
     browser.close();
   } catch (error) {
