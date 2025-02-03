@@ -19,7 +19,7 @@ const password = process.env.PASSWORD || "";
       headless: false,
       executablePath: browserPath,
       userDataDir: userDataDirPath,
-      slowMo: 100,
+      slowMo: 50,
     });
 
     let browserWSEndpoint = browser.wsEndpoint();
@@ -38,38 +38,10 @@ const password = process.env.PASSWORD || "";
         .locator("h1")
         .filter((h1) => h1.innerText === "Iniciar sesión")
         .wait();
-      console.log("Se detectó un formulario de inicio de sesión.");
-      await page.locator("#username").fill(userName);
-      console.log("Usuario ingresado");
-      await page.locator("#password").fill(password);
-      console.log("Contrasena ingresada");
-      await page.locator("#rememberMeOptIn-checkbox").fill("true");
-      console.log("Checkbox marcado");
-      await page.locator("button[type='submit']").click();
-      console.log("Iniciando sesión...");
-      await page.waitForSelector("h3", { timeout: 20000 });
-      await page
-        .locator("h3")
-        .filter((h3) => h3.innerText === name)
-        .wait();
       console.log("Se detectó el feed.");
       // Aquí puedes agregar el código para manejar el formulario de inicio de sesión
     } catch (error) {
       console.log("No se detectó un formulario de inicio de sesión.");
-    }
-
-    // Intentar detectar si hay un feed
-    try {
-      // Identifica la página de feed
-      await page.waitForSelector("h3", { timeout: 5000 });
-      await page
-        .locator("h3")
-        .filter((h3) => h3.innerText === name)
-        .wait();
-      console.log("Se detectó el feed.");
-      // Aquí puedes agregar el código para manejar el formulario de inicio de sesión
-    } catch (error) {
-      console.log("Se produjo un error");
     }
 
     browser.close();
