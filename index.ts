@@ -19,7 +19,7 @@ const password = process.env.PASSWORD || "";
       headless: false,
       executablePath: browserPath,
       userDataDir: userDataDirPath,
-      slowMo: 50,
+      slowMo: 100,
     });
 
     let browserWSEndpoint = browser.wsEndpoint();
@@ -30,21 +30,28 @@ const password = process.env.PASSWORD || "";
     });
 
     const page = await browser.newPage();
+    await page.setViewport({ width: 900, height: 900 });
     await page.goto("https://linkedin.com/feed/");
 
-    // Intentar detectar si hay un formulario de inicio de sesión
     try {
-      await page
-        .locator("h1")
-        .filter((h1) => h1.innerText === "Iniciar sesión")
-        .wait();
-      console.log("Se detectó el feed.");
-      // Aquí puedes agregar el código para manejar el formulario de inicio de sesión
+      const form = await page.waitForSelector("form[method='post']", {
+        timeout: 10000,
+      });
+      if (form) {
+        const uselog = page.locator("input[id='username']");
+        await uselog.wait();
+        await uselog.fill(userName);
+        await page.locator("input[id='password']").fill(password);
+        await page.locator("input[id='rememberMeOptIn-checkbox']").fill("true");
+        console.log("Se llenó el formulario. Datos: ", uselog);
+      } else {
+        console.log("No se detectó el formulario.");
+      }
     } catch (error) {
-      console.log("No se detectó un formulario de inicio de sesión.");
+      console.log("Se produjo un error en try/catch: ", error);
     }
 
-    browser.close();
+    // browser.close();
   } catch (error) {
     console.error("Ocurrió un error:", error);
   } finally {
