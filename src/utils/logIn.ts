@@ -6,6 +6,7 @@ const logIn = async (
   userName: string,
   password: string
 ) => {
+  let login = false;
   try {
     const form = await page.waitForSelector("form[class='login__form']", {
       timeout: 5000,
@@ -60,12 +61,12 @@ const logIn = async (
         return h3 && h3.textContent?.includes(name);
       });
       console.log("Sesión ya abierta.");
-      return true;
+      return (login = true);
     }
   } catch (error) {
     console.log("No se pudo confirmar el inicio de sesión: ", error);
-    return false;
   }
+  return login;
 };
 
 export default logIn;

@@ -32,7 +32,14 @@ const password: string = process.env.PASSWORD || "";
 
   await new Promise((resolve) => setTimeout(resolve, 2000));
 
-  await src.logIn(page, name, userName, password);
+  const login: boolean = await src.logIn(page, name, userName, password);
+  if (!login) {
+    console.log("No se pudo iniciar sesión.");
+    browser.close();
+    await browser.disconnect();
+    console.log("Navegador desconectado correctamente.");
+    return;
+  }
 
   await new Promise((resolve) => setTimeout(resolve, 2000));
 
