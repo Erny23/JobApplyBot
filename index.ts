@@ -19,7 +19,7 @@ const password = process.env.PASSWORD || "";
       headless: false,
       executablePath: browserPath,
       userDataDir: userDataDirPath,
-      slowMo: 350,
+      slowMo: 150,
     });
 
     let browserWSEndpoint = browser.wsEndpoint();
@@ -74,7 +74,46 @@ const password = process.env.PASSWORD || "";
       return h3 && h3.textContent?.includes(name);
     });
     console.log("Sesión ya abierta.");
+    await new Promise((resolve) => setTimeout(resolve, 2000));
 
+    await page.hover("a[href='https://www.linkedin.com/jobs/?']");
+    await new Promise((resolve) => setTimeout(resolve, 2000));
+    await page.click("a[href='https://www.linkedin.com/jobs/?']");
+    console.log("Entrando a la página de empleos...");
+
+    try {
+      await page.waitForSelector(
+        "a[href='https://www.linkedin.com/jobs/collections/recommended?discover=recommended&discoveryOrigin=JOBS_HOME_JYMBII']",
+        { visible: true }
+      );
+      const moreWorks = page.locator(
+        "a[href='https://www.linkedin.com/jobs/collections/recommended?discover=recommended&discoveryOrigin=JOBS_HOME_JYMBII']"
+      );
+      await new Promise((resolve) => setTimeout(resolve, 2000));
+      await moreWorks.hover();
+      await new Promise((resolve) => setTimeout(resolve, 2000));
+      await moreWorks.click();
+      console.log("Redirigiendo a empleos recomendados...");
+
+      await new Promise((resolve) => setTimeout(resolve, 2000));
+      const simpleRequest = page.locator(
+        "a[href='https://www.linkedin.com/jobs/collections/easy-apply?discover=recommended&discoveryOrigin=JOBS_HOME_JYMBII&start=0']"
+      );
+      await new Promise((resolve) => setTimeout(resolve, 2000));
+      await simpleRequest.hover();
+      await new Promise((resolve) => setTimeout(resolve, 2000));
+      await simpleRequest.click();
+      console.log("Redirigiendo a empleos con solicitud simple...");
+      await new Promise((resolve) => setTimeout(resolve, 2000));
+      await page.waitForSelector("ul.hTpjJTkbbHIePPiRZSAuhLZgzXdXmWlxpc", {
+        visible: true,
+      });
+      console.log("Empleos cargados correctamente.");
+    } catch (error) {
+      console.log("Error de try/catch página de empleos.");
+    }
+
+    await new Promise((resolve) => setTimeout(resolve, 5000));
     browser.close();
   } catch (error) {
     console.error("Ocurrió un error:", error);
