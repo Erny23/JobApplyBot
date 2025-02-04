@@ -19,7 +19,7 @@ const password = process.env.PASSWORD || "";
       headless: false,
       executablePath: browserPath,
       userDataDir: userDataDirPath,
-      slowMo: 100,
+      slowMo: 350,
     });
 
     let browserWSEndpoint = browser.wsEndpoint();
@@ -34,24 +34,48 @@ const password = process.env.PASSWORD || "";
     await page.goto("https://linkedin.com/feed/");
 
     try {
-      const form = await page.waitForSelector("form[method='post']", {
-        timeout: 10000,
+      await page.waitForSelector("form[method='post']", {
+        timeout: 20000,
       });
-      if (form) {
-        const uselog = page.locator("input[id='username']");
-        await uselog.wait();
-        await uselog.fill(userName);
-        await page.locator("input[id='password']").fill(password);
-        await page.locator("input[id='rememberMeOptIn-checkbox']").fill("true");
-        console.log("Se llenó el formulario. Datos: ", uselog);
-      } else {
-        console.log("No se detectó el formulario.");
+      await page.waitForSelector("input");
+      await page.click("input[id='username']");
+      await new Promise((resolve) => setTimeout(resolve, 2000));
+      for (const char of userName) {
+        await page.keyboard.type(char, { delay: 200 });
       }
+      await page.click("input[id='password']");
+      await new Promise((resolve) => setTimeout(resolve, 2000));
+      for (const char of password) {
+        await page.keyboard.type(char, { delay: 200 });
+      }
+      await new Promise((resolve) => setTimeout(resolve, 2000));
+      await page.click("input[id='rememberMeOptIn-checkbox']");
+      await new Promise((resolve) => setTimeout(resolve, 2000));
+      await page.locator("input[id='rememberMeOptIn-checkbox']").fill("true");
+      console.log("Se llenó el formulario.");
+      await new Promise((resolve) => setTimeout(resolve, 2000));
+      await page.hover("button[type='submit']");
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+      await page.click("button[type='submit']");
+      console.log("Iniciando sesión...");
+      await page.waitForSelector("h3", { visible: true });
+      await page.waitForFunction(() => {
+        const h3 = document.querySelector("h3");
+        return h3 && h3.textContent?.includes(name);
+      });
+      console.log("Sesión iniciada correctamente.");
     } catch (error) {
-      console.log("Se produjo un error en try/catch: ", error);
+      console.log("No se detectó el formulario de inicio de sesión.");
     }
 
-    // browser.close();
+    await page.waitForSelector("h3", { visible: true });
+    await page.waitForFunction(() => {
+      const h3 = document.querySelector("h3");
+      return h3 && h3.textContent?.includes(name);
+    });
+    console.log("Sesión ya abierta.");
+
+    browser.close();
   } catch (error) {
     console.error("Ocurrió un error:", error);
   } finally {
