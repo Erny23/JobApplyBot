@@ -1,6 +1,7 @@
 import { Browser, Page } from "puppeteer-core";
 import "dotenv/config";
 import * as src from "./src/index";
+import { ListJobs } from "./src/types/types";
 
 const browserPath: string =
   process.env.BROWSER_PATH ||
@@ -19,34 +20,46 @@ const password: string = process.env.PASSWORD || "";
   try {
     await page.setViewport({ width: 900, height: 900 });
     await page.goto("https://linkedin.com/feed/");
-    await page.waitForSelector("li-icon[aria-label='LinkedIn']", {
-      visible: true,
-    });
+    await src.waitElement(page, "li-icon[aria-label='LinkedIn']");
     console.log("Página cargada correctamente.");
   } catch (error) {
     console.error("La página no cargó:", error);
-    browser.close();
-    await browser.disconnect();
-    console.log("Navegador desconectado correctamente.");
+    src.disconnect(browser);
   }
 
-  await new Promise((resolve) => setTimeout(resolve, 2000));
+  await src.wait(2000);
 
-  const login: boolean = await src.logIn(page, name, userName, password);
-  if (!login) {
-    console.log("No se pudo iniciar sesión.");
-    browser.close();
-    await browser.disconnect();
-    console.log("Navegador desconectado correctamente.");
-    return;
+  await src.logIn(page, name, userName, password);
+
+  await src.wait(2000);
+
+  const btn: boolean = await src.waitElement(page, "span::-p-text('Empleos')");
+  if (btn) {
+    try {
+      const works = await page
+        .locator("#global-nav > div > nav > ul > li:nth-child(3) > a")
+        .waitHandle();
+      await works.hover();
+      await src.wait(2000);
+      await works.click();
+      console.log("Entrando a la página de empleos...");
+      await src.waitElement(
+        page,
+        "h2::-p-text('Principales empleos que te recomendamos')"
+      );
+      console.log("Página de Empleos cargada correctamente.");
+    } catch (error) {
+      console.log("Error al hacer click en botón empleos.");
+      src.disconnect(browser);
+    }
+  } else {
+    console.log("No se encontró el botón de empleos.");
+    src.disconnect(browser);
   }
 
-  await new Promise((resolve) => setTimeout(resolve, 2000));
+  const jobs: ListJobs = await src.listJobs(page);
+  console.log("Lista de trabajos obtenida: ", jobs);
 
-  await src.works(page);
-
-  await new Promise((resolve) => setTimeout(resolve, 5000));
-  browser.close();
-  await browser.disconnect();
-  console.log("Navegador desconectado correctamente.");
+  await src.wait(5000);
+  src.disconnect(browser);
 })();
