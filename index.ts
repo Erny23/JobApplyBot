@@ -48,6 +48,35 @@ const password: string = process.env.PASSWORD || "";
         "h2::-p-text('Principales empleos que te recomendamos')"
       );
       console.log("Página de Empleos cargada correctamente.");
+      const seeMore = await page
+        .locator(
+          "a[aria-label='Mostrar todo Principales empleos que te recomendamos'] > span"
+        )
+        .waitHandle();
+      await src.wait(2000);
+      await seeMore.hover();
+      await src.wait(5000);
+      await seeMore.click();
+      console.log("Cargando lista de trabajos...");
+      await src.waitElement(
+        page,
+        "span::-p-text('Principales empleos que te recomendamos')"
+      );
+      console.log("Lista de trabajos cargada correctamente.");
+      const simpleRequest = await page
+        .locator("a::-p-text('Solicitud sencilla')")
+        .waitHandle();
+      await src.wait(2000);
+      await simpleRequest.hover();
+      await src.wait(5000);
+      await simpleRequest.click();
+      console.log("Filtrando trabajos por solicitud sencilla...");
+      await src.wait(2000);
+      await src.waitElement(
+        page,
+        "span::-p-text('Empleos de solicitud sencilla de LinkedIn')"
+      );
+      console.log("Trabajos filtrados correctamente.");
     } catch (error) {
       console.log("Error al hacer click en botón empleos.");
       src.disconnect(browser);
@@ -57,7 +86,7 @@ const password: string = process.env.PASSWORD || "";
     src.disconnect(browser);
   }
 
-  const jobs: ListJobs = await src.listJobs(page);
+  const jobs = await src.listJobs(page);
   console.log("Lista de trabajos obtenida: ", jobs);
 
   await src.wait(5000);
