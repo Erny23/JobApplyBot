@@ -1,8 +1,11 @@
-import { Page } from "puppeteer-core";
-import { ListJobs } from "../types/types";
-import { waitPromise } from "./wait";
+import { PageContext } from "@context";
+import { ListJobs } from "@type";
+import { waitPromise } from "@wait";
 
-const recomendedWorks = async (page: Page) => {
+const recomendedWorks = async () => {
+  const pageContext = PageContext.getInstance();
+  const page = pageContext.getPage();
+
   const routeBase: string = "main > div > div:nth-child(2) > div > div";
 
   const element1 = await page
@@ -31,7 +34,7 @@ const recomendedWorks = async (page: Page) => {
 
   await waitPromise(2000);
 
-  const offers: ListJobs = await page.$$eval(
+  const listOffers: ListJobs = await page.$$eval(
     `${routeBase} > ul > li`,
     (list) => {
       return list.map((offer) => {
@@ -84,7 +87,7 @@ const recomendedWorks = async (page: Page) => {
     }
   );
 
-  return offers;
+  return listOffers;
 };
 
 export default recomendedWorks;

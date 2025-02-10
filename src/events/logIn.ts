@@ -1,21 +1,16 @@
-import { Page } from "puppeteer-core";
-import { waitForElements } from "./wait";
+import { PageContext } from "@context";
+import { waitForElements } from "@wait";
 
-const logIn = async (
-  page: Page,
-  name: string,
-  userName: string,
-  password: string
-) => {
+const logIn = async (name: string, userName: string, password: string) => {
+  const pageContext = PageContext.getInstance();
+  const page = pageContext.getPage();
+
   let login: boolean = false;
   const currentUrl: string = page.url();
 
   if (currentUrl.includes("linkedin.com/feed")) {
     try {
-      const feed: boolean = await waitForElements(
-        page,
-        `h3::-p-text("${name}")`
-      );
+      const feed: boolean = await waitForElements(`h3::-p-text("${name}")`);
       if (feed) {
         console.log("Sesión ya abierta.");
         return (login = true);
@@ -27,10 +22,7 @@ const logIn = async (
     }
   } else if (currentUrl.includes("login")) {
     try {
-      const form: boolean = await waitForElements(
-        page,
-        "form[class='login__form']"
-      );
+      const form: boolean = await waitForElements("form[class='login__form']");
       console.log("Se detectó la página de inicio de sesión.");
       await page.waitForSelector("input");
 
@@ -74,7 +66,6 @@ const logIn = async (
 
       try {
         await waitForElements(
-          page,
           "h3[class='profile-card-name text-heading-large']"
         );
         console.log("Sesión iniciada correctamente.");

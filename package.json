@@ -4,7 +4,7 @@
   "description": "JobApplyBot is an automation tool designed to streamline the job application process on various online job platforms. Utilizing PuppeteerJS, this program automates the tedious tasks of filling out application forms, uploading resumes, and submitting applications, allowing users to focus on what really matters: landing their dream job.",
   "main": "index",
   "scripts": {
-    "test": "ts-node index",
+    "test": "ts-node -r tsconfig-paths/register index",
     "build": "tsc",
     "start": "node dist/index.js"
   },
@@ -16,6 +16,7 @@
     "dotenv": "^16.4.7",
     "node-fetch": "^3.3.2",
     "ts-node": "^10.9.2",
+    "tsconfig-paths": "^4.2.0",
     "typescript": "^5.7.3"
   },
   "dependencies": {

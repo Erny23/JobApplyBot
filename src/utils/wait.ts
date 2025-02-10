@@ -1,18 +1,21 @@
-import { Page } from "puppeteer-core";
+import { PageContext } from "@context";
 
 const initialTime = 2000;
 const maxTime = 10000;
 const increment = 2000;
 let currentTime = initialTime;
 
-export const waitForElements = async (page: Page, selector: string) => {
+export const waitForElements = async (selector: string) => {
+  const pageContext = PageContext.getInstance();
+  const page = pageContext.getPage();
+
   let found = false;
-  let emelent: any;
+  let element: any;
 
   console.log("Esperando elementos...");
   while (!found && currentTime <= maxTime) {
     try {
-      emelent = await page.waitForSelector(selector, {
+      element = await page.waitForSelector(selector, {
         visible: true,
         timeout: currentTime,
       });
