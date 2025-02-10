@@ -55,9 +55,36 @@ The project dependencies will be installed automatically when running `pnpm inst
    - **NAME**="Your name"
 6. Run the bot `pnpm run test`
 
-## Contributing
+## Contributing 🤝
 
-Contributions are welcome! Please read the contributing guidelines for more information on how to get involved.
+Contributions are welcome and appreciated! If you'd like to improve **JobApplyBot**, follow these steps:
+
+1. **Fork the repository** and clone it to your local environment:
+  ```bash
+  git clone https://github.com/your-username/JobApplyBot.git
+  cd JobApplyBot
+2. **Create a branch** for your feature or fix:
+  git checkout -b your-feature-name
+3. **Make your changes** and ensure you follow best coding practices:
+  - Write clean and well-documented code.
+  - Add tests if necessary.
+  - Update the documentation if you introduce new features.
+4. **Commit your changes** with a descriptive message:
+  git commit -m "Add new feature: [brief description]"
+5. Push to the branch in your forked repository:
+  git push origin your-feature-name
+6. **Open a Pull Request (PR)** in the original repository:
+  - Describe the changes you've made.
+  - Explain the purpose of your contribution.
+  - Ensure your code passes all tests and adheres to the project's standards.
+
+## Contribution Guidelines
+
+  - Report issues: If you find a bug or have a suggestion, open an issue on GitHub.
+  - Keep your code clean: Follow existing code conventions and ensure your contribution is easy to understand.
+  - Document your changes: If you add new features, update the relevant documentation.
+
+I appreciate your help in making **JobApplyBot** better!
 
 ## License
 
