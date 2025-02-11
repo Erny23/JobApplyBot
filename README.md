@@ -15,14 +15,6 @@
   - **Status** (viewed or not viewed).
 - **Location Filtering**: Filters job postings based on location parameters (currently, this feature does not use the `.env` file).
 
-# Getting Started
-
-To get started with JobApplyBot, clone the repository and follow the installation instructions in the documentation.
-
-# Prerequisites 📋
-
-To run **JobApplyBot**, ensure you have the following installed on your system:
-
 # Core Dependencies
 
 - **[Node.js](https://nodejs.org/)** (v23.3.0 or higher).
@@ -41,19 +33,33 @@ The project dependencies will be installed automatically when running `pnpm inst
 
 ---
 
+# Getting Started
+
+To get started with JobApplyBot, clone the repository and follow the installation instructions in the documentation.
+
 # Installation ⚙️
 
-1. Clone the repository: git clone https://github.com/ernest0dev/JobApplyBot.git
-2. Select the repository in terminal: `cd JobApplyBot`
-3. Install the proyect: `pnpm install`
-4. Create a `.env` file in the root of the project and add the following variables with your personal
-5. data:
+1. Clone the repository:
+```bash
+git clone https://github.com/ernest0dev/JobApplyBot.git
+cd JobApplyBot
+pnpm install
+```
+5. Create a `.env` file in the root of the project and add the following variables with your personal:
+```bash
+touch .env
+nano .env
+```
+7. data:
    - **BROWSER_PATH**="C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe"
    - **USER_DATA**="C:\\Users\\[`Your user`]\\AppData\\Local\\Google\\Chrome\\User Data\\Default"
    - **USER**="Your email"
    - **PASSWORD**="Your password"
    - **NAME**="Your name"
-6. Run the bot `pnpm run test`
+8. Run the bot:
+```bash
+pnpm run test
+```
 
 # Contributing 🤝
 
@@ -62,8 +68,9 @@ Contributions are welcome and appreciated! If you'd like to improve **JobApplyBo
 1. **Fork the repository** and clone it to your local environment:
 
 ```bash
-git clone https://github.com/your-username/JobApplyBot.git
+git clone https://github.com/ernest0dev/JobApplyBot.git
 cd JobApplyBot
+pnpm install
 ```
 
 2. **Create a branch** for your feature or fix:
