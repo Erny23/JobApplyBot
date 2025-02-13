@@ -1,9 +1,19 @@
-export type ListJobs = {
-  id: string | null;
-  title: string | null | undefined;
-  location: string | null | undefined;
+export type Jobs = {
+  id: string;
+  title: string;
+  location: string;
   itemsList: {
-    view: boolean | undefined;
-    simpleRequest: boolean | null | undefined;
+    view: boolean;
+    simpleRequest: boolean;
+  };
+};
+
+export type ListJobs = {
+  id: string;
+  title: string;
+  location: string;
+  itemsList: {
+    view: boolean;
+    simpleRequest: boolean;
   };
 }[];

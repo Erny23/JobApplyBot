@@ -24,8 +24,11 @@ const password: string = process.env.PASSWORD || "";
   pageContext.setPage(page);
 
   try {
-    await page.setViewport({ width: 900, height: 900 });
-    await page.goto("https://linkedin.com/feed/");
+    await page.setViewport({ width: 1200, height: 900 });
+    await page.goto(
+      "https://www.linkedin.com/jobs/collections/easy-apply/?currentJobId=4139636950&discover=recommended&discoveryOrigin=JOBS_HOME_JYMBII#?lipi=urn%3Ali%3Apage%3Ad_flagship3_job_collections_discovery_landing%3BO%2FlCCd0zS76o0%2F5yiVgGiA%3D%3D"
+    );
+    //await page.goto("https://linkedin.com/feed/");
     await waitForElements("li-icon[aria-label='LinkedIn']");
     console.log("Página cargada correctamente.");
   } catch (error) {
@@ -33,7 +36,7 @@ const password: string = process.env.PASSWORD || "";
     src.disconnect(browser);
   }
 
-  await waitPromise(2000);
+  /*await waitPromise(2000);
 
   await src.logIn(name, userName, password);
 
@@ -87,10 +90,12 @@ const password: string = process.env.PASSWORD || "";
   } else {
     console.log("No se encontró el botón de empleos.");
     src.disconnect(browser);
-  }
+  }*/
 
-  const jobs: ListJobs = await src.offers();
-  console.log("Lista de trabajos obtenida: ", jobs);
+  const recomendedJobs: ListJobs = await src.offers();
+  console.log("Lista: ", recomendedJobs);
+
+  await src.apply(recomendedJobs);
 
   await waitPromise(5000);
   src.disconnect(browser);

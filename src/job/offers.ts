@@ -9,7 +9,9 @@ const offers = async () => {
 
   const filterByLocation = filter.location(filteredByNull);
 
-  return filterByLocation;
+  const filterByTitle = filter.title(filterByLocation);
+
+  return filterByTitle;
 };
 
 export default offers;
