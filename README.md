@@ -15,14 +15,6 @@
   - **Status** (viewed or not viewed).
 - **Location Filtering**: Filters job postings based on location parameters (currently, this feature does not use the `.env` file).
 
-# Getting Started
-
-To get started with JobApplyBot, clone the repository and follow the installation instructions in the documentation.
-
-# Prerequisites 📋
-
-To run **JobApplyBot**, ensure you have the following installed on your system:
-
 # Core Dependencies
 
 - **[Node.js](https://nodejs.org/)** (v23.3.0 or higher).
@@ -40,6 +32,10 @@ The project dependencies will be installed automatically when running `pnpm inst
 - **@types/node** (v22.12.0): Type definitions for Node.js.
 
 ---
+
+# Getting Started
+
+To get started with JobApplyBot, clone the repository and follow the installation instructions in the documentation.
 
 # Installation ⚙️
 
