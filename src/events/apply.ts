@@ -48,6 +48,7 @@ const apply = async (offer: ListJobs) => {
           MODE: "div.jobs-details__main-content > div:nth-child(1) ul > li:nth-child(1) > span > span",
           FEATURES:
             "div.jobs-details__main-content div#how-you-match-card-container > section.job-details-how-you-match-card__header > div > h2",
+          DESCRIPTION: "div.jobs-details__main-content article div.mt4 > p",
         };
 
         constructor(offer: Element) {
@@ -113,6 +114,40 @@ const apply = async (offer: ListJobs) => {
           return feature.trim();
         }
 
+        get description(): any {
+          const descriptionElement = this.offer.querySelector(
+            ApplyJobs.SELECTORS.DESCRIPTION
+          ) as HTMLElement;
+          if (!descriptionElement) {
+            return "";
+          }
+          const listElements = descriptionElement.querySelectorAll(
+            "span > p"
+          ) as NodeListOf<Element>;
+          if (!listElements) {
+            return "";
+          }
+          const descriptionData: string[] = [];
+          listElements.forEach((item) => {
+            switch (item.tagName.toLowerCase()) {
+              case "strong":
+                descriptionData.push(item.textContent?.trim() || "");
+                break;
+              case "p":
+                descriptionData.push(item.textContent?.trim() || "");
+                break;
+              case "span":
+                descriptionData.push(item.textContent?.trim() || "");
+                break;
+              default:
+                descriptionData.push(item.textContent?.trim() || "");
+                break;
+            }
+          });
+
+          return descriptionData.filter((text) => text !== "").join(" ");
+        }
+
         get applyData() {
           return {
             title: this.title,
@@ -124,6 +159,7 @@ const apply = async (offer: ListJobs) => {
               Other: this.subData[3],
             },
             features: this.features,
+            description: this.description,
           };
         }
       }
