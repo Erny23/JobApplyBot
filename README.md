@@ -40,6 +40,10 @@ To get started with JobApplyBot, clone the repository and follow the installatio
 # Installation ⚙️
 
 1. Clone the repository:
+   <<<<<<< HEAD
+   =======
+
+> > > > > > > ernesto
 
 ```bash
 git clone https://github.com/ernest0dev/JobApplyBot.git
@@ -47,20 +51,33 @@ cd JobApplyBot
 pnpm install
 ```
 
+<<<<<<< HEAD 5. Create a `.env` file in the root of the project and add the following variables with your personal:
+=======
+
 5. Create a `.env` file in the root of the project and add the following variables with your personal:
+
+> > > > > > > ernesto
 
 ```bash
 touch .env
 nano .env
 ```
 
-7. data:
-   - **BROWSER_PATH**="C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe"
-   - **USER_DATA**="C:\\Users\\[`Your user`]\\AppData\\Local\\Google\\Chrome\\User Data\\Default"
-   - **USER**="Your email"
-   - **PASSWORD**="Your password"
-   - **NAME**="Your name"
+# <<<<<<< HEAD
+
+> > > > > > > ernesto 7. data:
+
+- **BROWSER_PATH**="C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe"
+- **USER_DATA**="C:\\Users\\[`Your user`]\\AppData\\Local\\Google\\Chrome\\User Data\\Default"
+- **USER**="Your email"
+- **PASSWORD**="Your password"
+- **NAME**="Your name"
+
 8. Run the bot:
+   <<<<<<< HEAD
+   =======
+
+> > > > > > > ernesto
 
 ```bash
 pnpm run test
