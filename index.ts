@@ -25,18 +25,15 @@ const password: string = process.env.PASSWORD || "";
 
   try {
     await page.setViewport({ width: 1200, height: 900 });
-    await page.goto(
-      "https://www.linkedin.com/jobs/collections/easy-apply/?currentJobId=4139636950&discover=recommended&discoveryOrigin=JOBS_HOME_JYMBII#?lipi=urn%3Ali%3Apage%3Ad_flagship3_job_collections_discovery_landing%3BO%2FlCCd0zS76o0%2F5yiVgGiA%3D%3D"
-    );
-    //await page.goto("https://linkedin.com/feed/");
+    await page.goto("https://linkedin.com/feed/");
     await waitForElements("li-icon[aria-label='LinkedIn']");
-    console.log("Página cargada correctamente.");
+    console.log("Page has loaded successful");
   } catch (error) {
-    console.error("La página no cargó:", error);
+    console.error("Error, the page failed to load.");
     src.disconnect(browser);
   }
 
-  /*await waitPromise(2000);
+  await waitPromise(2000);
 
   await src.logIn(name, userName, password);
 
@@ -51,11 +48,11 @@ const password: string = process.env.PASSWORD || "";
       await works.hover();
       await waitPromise(2000);
       await works.click();
-      console.log("Entrando a la página de empleos...");
+      console.log("Loading page of jobs...");
       await waitForElements(
         "h2::-p-text('Principales empleos que te recomendamos')"
       );
-      console.log("Página de Empleos cargada correctamente.");
+      console.log("Page of jobs has loaded successful");
       const seeMore = await page
         .locator(
           "a[aria-label='Mostrar todo Principales empleos que te recomendamos'] > span"
@@ -65,11 +62,11 @@ const password: string = process.env.PASSWORD || "";
       await seeMore.hover();
       await waitPromise(5000);
       await seeMore.click();
-      console.log("Cargando lista de trabajos...");
+      console.log("Loading jobs list...");
       await waitForElements(
         "span::-p-text('Principales empleos que te recomendamos')"
       );
-      console.log("Lista de trabajos cargada correctamente.");
+      console.log("List of jobs has loaded successful");
       const simpleRequest = await page
         .locator("a::-p-text('Solicitud sencilla')")
         .waitHandle();
@@ -77,26 +74,26 @@ const password: string = process.env.PASSWORD || "";
       await simpleRequest.hover();
       await waitPromise(5000);
       await simpleRequest.click();
-      console.log("Filtrando trabajos por solicitud sencilla...");
+      console.log("Loading list of jobs with simple request...");
       await waitPromise(2000);
       await waitForElements(
         "span::-p-text('Empleos de solicitud sencilla de LinkedIn')"
       );
-      console.log("Trabajos filtrados correctamente.");
+      console.log("Page of jobs with simple request has loaded successful");
     } catch (error) {
-      console.log("Error al hacer click en botón empleos.");
+      console.log("Error, could not click the button.");
       src.disconnect(browser);
     }
   } else {
-    console.log("No se encontró el botón de empleos.");
+    console.log("Error, could not found the button.");
     src.disconnect(browser);
-  }*/
-
+  }
+  console.log("Looking for jobs in recommended list by LinkedIn...");
   const recomendedJobs: ListJobs = await src.offers();
-  console.log("Lista: ", recomendedJobs);
+  console.log(`There were ${recomendedJobs.length} job offers left.`);
 
   await src.apply(recomendedJobs);
 
-  await waitPromise(5000);
+  await waitPromise(8000);
   src.disconnect(browser);
 })();

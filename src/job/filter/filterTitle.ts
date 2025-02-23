@@ -1,36 +1,57 @@
 import { ListJobs } from "@type";
-import { parseArrayEnv } from "@parse";
+import { parseArray, removeDuplicate } from "@parse";
 
-const keywordsEnv = process.env.KEYWORDS;
-const excludeEnv = process.env.EXCLUDE;
+class Parser {
+  keyword: string[];
+
+  constructor(keyword: string) {
+    this.keyword = this.parseKeywords(keyword);
+  }
+
+  private parseKeywords(keyword: string): string[] {
+    const listKeywords = parseArray(keyword);
+    return removeDuplicate(listKeywords);
+  }
+
+  getKeywords(): string[] {
+    return this.keyword;
+  }
+}
 
 const filter = (offers: ListJobs) => {
-  const include = parseArrayEnv(keywordsEnv);
-  const exclude = parseArrayEnv(excludeEnv);
-
+  const keywordsInclude: string = process.env.KEYWORDS || "";
+  const keywordsExclude: string = process.env.EXCLUDES || "";
+  if (keywordsInclude === "" && keywordsExclude === "") {
+    return offers;
+  }
+  const keywordForParse: Parser = new Parser(keywordsInclude);
+  const includeKeywords: string[] = keywordForParse.getKeywords();
+  const excludeForParse: Parser = new Parser(keywordsExclude);
+  const excludeKeywords: string[] = excludeForParse.getKeywords();
   return offers
     .filter((offer) => {
-      // Check if the bid matches an inclusion keyword
-      const matches = (job: string) => {
-        if (!job) {
-          return false;
+      const titleForParse: Parser = new Parser(offer.title);
+      const titleKeywords: string[] = titleForParse.getKeywords();
+
+      const isRelevance: boolean = includeKeywords.some((keyword: string) => {
+        return titleKeywords.includes(keyword);
+      });
+
+      const isNotRelevance: boolean = excludeKeywords.some(
+        (keyword: string) => {
+          if (!isRelevance) {
+            return false;
+          }
+          return titleKeywords.includes(keyword);
         }
-        const keyword = job.toLowerCase();
-        if (offer.title && typeof offer.title === "string") {
-          return offer.title.toLowerCase().includes(keyword);
-        }
-        return false;
-      };
+      );
 
-      // Check if the bid matches at least one inclusion keyword
-      const hasKeywordMatch = include.some((job) => matches(job));
+      const specificKeywords = ["no", "remunerado"];
+      const specificExclusion: boolean = specificKeywords.every((keyword) => {
+        return titleKeywords.includes(keyword);
+      });
 
-      // Check if the bid does NOT match any exclusion keywords
-      const hasNoExcludeMatch = exclude.every((job) => !matches(job));
-
-      // Include the bid only if it matches at least one keyword
-      // and does not match any exclusion keywords
-      return hasKeywordMatch && hasNoExcludeMatch;
+      return isRelevance && !isNotRelevance && !specificExclusion;
     })
     .map((offer) => {
       return {

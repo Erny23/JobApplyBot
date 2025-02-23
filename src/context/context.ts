@@ -25,7 +25,7 @@ export class PageContext {
   public getPage(): Page {
     if (!this.page) {
       throw new Error(
-        "Page no ha sido inicializada. Asegúrate de llamar a setPage primero."
+        "Error, the page context has not be set, first call to setPage method in PageContext class."
       );
     }
     return this.page;

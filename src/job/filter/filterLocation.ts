@@ -1,59 +1,41 @@
 import { ListJobs } from "@type";
+import { parseArray } from "@parse";
 
-const countriesEnv = process.env.COUNTRY;
-const statesEnv = process.env.STATE;
-const citiesEnv = process.env.CITY;
-
-const parseArrayEnv = (
-  env: string | undefined,
-  separator: string = ","
-): string[] => {
-  if (!env) {
-    return [];
-  }
-  return env.split(separator);
-};
+const countriesEnv = process.env.COUNTRY || "";
+const statesEnv = process.env.STATE || "";
+const citiesEnv = process.env.CITY || "";
 
 const filter = (offers: ListJobs) => {
-  const countries = parseArrayEnv(countriesEnv);
-  const states = parseArrayEnv(statesEnv);
-  const cities = parseArrayEnv(citiesEnv);
-
+  const countries = parseArray(countriesEnv);
+  const states = parseArray(statesEnv);
+  const cities = parseArray(citiesEnv);
+  console.log(
+    `Doing filter for offers the countries: ${countries}, in the states: ${states}, with possibility in: ${cities}`
+  );
   return offers
     .filter((offer) => {
-      const location = (place: string) => {
-        if (!place) {
-          return false;
-        }
-        const ple = place.toLowerCase();
-        if (offer.location && typeof offer.location === "string") {
-          return offer.location.toLowerCase().includes(ple) || false;
-        }
-        return false;
-      };
+      const location = offer.location ? offer.location.toLowerCase() : "";
 
-      const inCountry = countries.some((country) => {
-        if (!country) {
-          return false;
-        }
-        return location(country);
-      });
+      const matchesCountry = countries.some((country) =>
+        location.includes(country)
+      );
+      const matchesState = states.some((state) => location.includes(state));
+      const matchesCity = cities.some((city) => location.includes(city));
 
-      const inState = states.some((state) => {
-        if (!state) {
-          return false;
-        }
-        return location(state);
-      });
+      const matchesCombination = countries.some((country) =>
+        states.some((state) =>
+          cities.some(
+            (city) =>
+              location.includes(`${city}, ${state}, ${country}`) ||
+              location.includes(`${state}, ${country}`) ||
+              location.includes(`${city}, ${country}`)
+          )
+        )
+      );
 
-      const inCity = cities.some((city) => {
-        if (!city) {
-          return false;
-        }
-        return location(city);
-      });
-
-      return inCountry || inState || inCity;
+      return (
+        matchesCountry || matchesState || matchesCity || matchesCombination
+      );
     })
     .map((offer) => {
       return {

@@ -3,10 +3,18 @@ import { ListJobs } from "@type";
 const filter = (offers: ListJobs) => {
   return offers
     .filter((offer) => {
-      const title: boolean = offer.title !== "";
-      const location: boolean = offer.location !== "";
+      const title: boolean =
+        offer.title === "" ||
+        offer.title.length < 2 ||
+        offer.title === null ||
+        offer.title === undefined;
+      const location: boolean =
+        offer.title === "" ||
+        offer.title.length < 2 ||
+        offer.title === null ||
+        offer.title === undefined;
       const request: boolean = offer.itemsList.simpleRequest;
-      return title && location && request;
+      return !title && !location && request;
     })
     .map((offer) => {
       return {

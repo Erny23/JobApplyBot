@@ -9,14 +9,14 @@ const recomendedWorks = async () => {
   const routeBase: string = "main > div > div:nth-child(2) > div > div";
 
   let i = 5;
-  while (i < 20) {
+  while (i < 25) {
     const element = await page
       .locator(`${routeBase} > ul > li:nth-child(${i})`)
       .waitHandle();
     if (element) {
       await element.scrollIntoView();
     }
-    await waitPromise(2000);
+    await waitPromise(5000);
     i += 5;
   }
 
@@ -38,10 +38,6 @@ const recomendedWorks = async () => {
             "div > div > div > div > div:nth-child(2) > div > ul > li > span",
           VIEW: "div > div > div > ul.job-card-list__footer-wrapper > li:nth-child(1)",
           ICON: "div > div > div > ul.job-card-list__footer-wrapper > li > svg.job-card-list__icon",
-          SIMPLE_REQUEST: [
-            "div > div > div > ul.job-card-list__footer-wrapper > li:nth-child(2) > span",
-            "div > div > div > ul.job-card-list__footer-wrapper > li:nth-child(3) > span",
-          ],
         };
 
         constructor(offer: Element) {
@@ -95,22 +91,8 @@ const recomendedWorks = async () => {
           if (!iconSelector) {
             return false;
           }
-          const simpleRequestSelector = (this.offer.querySelector(
-            Offer.SELECTORS.SIMPLE_REQUEST[0]
-          ) ||
-            this.offer.querySelector(
-              Offer.SELECTORS.SIMPLE_REQUEST[1]
-            )) as HTMLElement;
-          if (!simpleRequestSelector) {
-            return false;
-          }
-          const simpleRequestText = simpleRequestSelector.textContent as string;
-          if (!simpleRequestSelector) {
-            return false;
-          }
-          const simpleRequest: boolean =
-            simpleRequestText.includes("Solicitud");
-          return !!iconSelector && !!simpleRequest;
+
+          return !!iconSelector;
         }
 
         get offerData(): Jobs {
