@@ -39,27 +39,17 @@ To get started with JobApplyBot, clone the repository and follow the installatio
 
 # Installation ⚙️
 
-1. Clone the repository:
-```bash
-git clone https://github.com/ernest0dev/JobApplyBot.git
-cd JobApplyBot
-pnpm install
-```
-5. Create a `.env` file in the root of the project and add the following variables with your personal:
-```bash
-touch .env
-nano .env
-```
-7. data:
+1. Clone the repository: git clone https://github.com/ernest0dev/JobApplyBot.git
+2. Select the repository in terminal: `cd JobApplyBot`
+3. Install the proyect: `pnpm install`
+4. Create a `.env` file in the root of the project and add the following variables with your personal
+5. data:
    - **BROWSER_PATH**="C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe"
    - **USER_DATA**="C:\\Users\\[`Your user`]\\AppData\\Local\\Google\\Chrome\\User Data\\Default"
    - **USER**="Your email"
    - **PASSWORD**="Your password"
    - **NAME**="Your name"
-8. Run the bot:
-```bash
-pnpm run test
-```
+6. Run the bot `pnpm run test`
 
 # Contributing 🤝
 

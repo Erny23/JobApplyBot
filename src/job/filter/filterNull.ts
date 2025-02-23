@@ -3,14 +3,18 @@ import { ListJobs } from "@type";
 const filter = (offers: ListJobs) => {
   return offers
     .filter((offer) => {
-      const title =
-        offer.title !== null && offer.title !== undefined && offer.title !== "";
-      const location =
-        offer.location !== null &&
-        offer.location !== undefined &&
-        offer.location !== "";
-      const request: boolean = offer.itemsList.simpleRequest || false;
-      return title && location && request;
+      const title: boolean =
+        offer.title === "" ||
+        offer.title.length < 2 ||
+        offer.title === null ||
+        offer.title === undefined;
+      const location: boolean =
+        offer.title === "" ||
+        offer.title.length < 2 ||
+        offer.title === null ||
+        offer.title === undefined;
+      const request: boolean = offer.itemsList.simpleRequest;
+      return !title && !location && request;
     })
     .map((offer) => {
       return {

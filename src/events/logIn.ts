@@ -10,25 +10,20 @@ const logIn = async (name: string, userName: string, password: string) => {
 
   if (currentUrl.includes("linkedin.com/feed")) {
     try {
-      const feed: boolean = await waitForElements(`h3::-p-text("${name}")`);
-      if (feed) {
-        console.log("Sesión ya abierta.");
-        return (login = true);
-      } else {
-        console.log("No se detectó la página de feed.");
-      }
+      await waitForElements(`h3::-p-text("${name}")`);
+      console.log("Already login");
     } catch (error) {
-      console.log("No se pudo confirmar el inicio de sesión.");
+      console.log("Could not check login");
     }
   } else if (currentUrl.includes("login")) {
     try {
-      const form: boolean = await waitForElements("form[class='login__form']");
-      console.log("Se detectó la página de inicio de sesión.");
+      await waitForElements("form[class='login__form']");
+      console.log("Login form is detected");
       await page.waitForSelector("input");
 
       const userNameProfile = await page.$("dt[class='profile__identity']");
       if (userNameProfile) {
-        console.log("Se detectó el usuario anteriormente utilizado.");
+        console.log("Previous user login is detected");
       } else {
         const useNameInput = await page
           .locator("input[id='username']")
@@ -53,7 +48,7 @@ const logIn = async (name: string, userName: string, password: string) => {
         await page.locator("input[value='false']").click();
       }
 
-      console.log("Se llenó el formulario.");
+      console.log("The login form was fill successful");
 
       await new Promise((resolve) => setTimeout(resolve, 2000));
 
@@ -62,22 +57,22 @@ const logIn = async (name: string, userName: string, password: string) => {
       await new Promise((resolve) => setTimeout(resolve, 2000));
       await button.click();
 
-      console.log("Iniciando sesión...");
+      console.log("Logging in...");
 
       try {
         await waitForElements(
           "h3[class='profile-card-name text-heading-large']"
         );
-        console.log("Sesión iniciada correctamente.");
+        console.log("The login has loaded successful");
         login = true;
       } catch (error) {
-        console.log("Error al iniciar sesión.");
+        console.log("Error, could not load login.");
       }
     } catch (error) {
-      console.log("No se detectó la página de inicio de sesión.");
+      console.log("Error, the page login failed to load.");
     }
   } else {
-    console.log("Ocurrió un problema al cargar la página.");
+    console.log("Error, there was a problem loading the page.");
   }
 
   return login;

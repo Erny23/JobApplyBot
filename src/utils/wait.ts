@@ -12,7 +12,7 @@ export const waitForElements = async (selector: string) => {
   let found = false;
   let element: any;
 
-  console.log("Esperando elementos...");
+  console.log("Waitting for elements...");
   while (!found && currentTime <= maxTime) {
     try {
       element = await page.waitForSelector(selector, {
@@ -22,18 +22,18 @@ export const waitForElements = async (selector: string) => {
       found = true;
     } catch (error) {
       console.log(
-        `No se encontraron elementos. Reintentando en ${
+        `Could not found elements. Restarting in ${
           currentTime / 1000
-        } segundos...`
+        } seconds...`
       );
       currentTime += increment;
     }
   }
 
   if (found) {
-    console.log("Elemento encontrado!");
+    console.log("Found elements!");
   } else {
-    console.log("No se encontró: ", selector);
+    console.log("Could not found the selector: ", selector);
   }
   return found;
 };
